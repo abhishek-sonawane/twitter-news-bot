@@ -14,21 +14,19 @@ const client  = new TwitterApi({
 
 const  rwTwitter = client.readWrite
 
+// get news from r/news subbreddit reddit api
 const getNews = async ()=>{
     const response = await fetch('https://www.reddit.com/r/news.json');
     const data = await response.json();
      const random = Math.floor(Math.random()*data.data.children.length)
      return (`${data.data.children[random].data.title} \n \n ${data.data.children[random].data.url_overridden_by_dest&&data.data.children[random].data.url_overridden_by_dest}`)
     
-    }
-    
-//    data.data.children[random].data.url_overridden_by_dest
-const tweett = getNews()
-console.log(tweett)
+}
+
 
 const tweet = async()=>{
     try {
-        console.log(await rwTwitter.v2.me())
+        console.log(await rwTwitter.v2.tweet(await getNews()))
     } catch (error) {
         console.log(error)
     }
